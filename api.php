@@ -10,12 +10,10 @@ if(!empty($_POST['user']) && !empty($_POST['pass'])) { // GENERAR TOKEN
     $ejecucionSQL->execute($params);
     $res = $ejecucionSQL->fetchAll();
     $count = $ejecucionSQL->rowCount();
-    foreach ($res as $rs) { // generacion de token
-        if ($count > 0) {
-            $sql = "UPDATE `programacion1`.`usuario` SET `token` = '".$token."' WHERE `usuario` = '".$user."' AND `clave` = '".$pass."'; ";
-            $ejecucionSQL = $conexion->prepare($sql);
-            $ejecucionSQL->execute();
-            exit;
-        }
+    if ($count > 0) {
+        $sql = "UPDATE `programacion1`.`usuario` SET `token` = '".$token."' WHERE `usuario` = '".$user."' AND `clave` = '".$pass."'; ";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute();
+    exit;
     }
 }
