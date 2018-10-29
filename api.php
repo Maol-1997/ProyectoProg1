@@ -14,6 +14,7 @@ if(!empty($_POST['user']) && !empty($_POST['pass'])) { // GENERAR TOKEN
         $sql = "UPDATE `programacion1`.`usuario` SET `token` = '".$token."' WHERE `usuario` = '".$user."' AND `clave` = '".$pass."'; ";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL->execute();
+        echo "El token generado es: ".$token;
     exit;
     }
 }
