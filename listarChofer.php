@@ -2,9 +2,9 @@
 include("myconnection.php");
 include("token.php");
 
-if(token($data["token"]) != false) {
+if(token($_GET['token']) != false) {
     $time_pre = microtime(true);
-    $sql = "SELECT * FROM usuario";
+    $sql = "SELECT * FROM chofer";
     $stmt = $conexion->prepare($sql);
     $stmt->execute();
 
@@ -21,7 +21,7 @@ if(token($data["token"]) != false) {
     $time_post = microtime(true);
     $time = $time_post - $time_pre;
 
-    $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('".date('Y-m-d H:i:s')."', '".token($data["token"])."', '".$time."', 'asd');";
+    $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('".date('Y-m-d H:i:s')."', '".token($_GET['token'])."', '".$time."', 'asd');";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }

@@ -7,7 +7,7 @@ function token($a){
     $ejecucionSQL->execute();
     $res = $ejecucionSQL->fetchAll();
     $count = $ejecucionSQL->rowCount();
-    if(count > 0) {
+    if($count > 0) {
         foreach ($res as $rs) {
             return $rs['usuario'];
         }
