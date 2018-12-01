@@ -1,13 +1,22 @@
 <?php
 include("myconnection.php");
 include("token.php");
-$data = json_decode(file_get_contents("php://input"),true);
+
 if(token($data["token"]) != false) {
     $time_pre = microtime(true);
+    $sql = "SELECT * FROM usuario";
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute();
 
-    $sql = "INSERT INTO `transporte`.`chofer` (`apellido`, `nombre`, `documento`, `email`, `vehiculo_id`, `sistema_id`) VALUES ('" . $data["apellido"] . "', '" . $data["nombre"] . "', '" . $data["documento"] . "', '" . $data["email"] . "', '" . $data["vehiculo_id"] . "', '" . $data["sistema_id"] . "');";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL->execute();
+    $choferes = array();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        $choferes['Choferes'][] = $row;
+
+    }
+
+    echo json_encode($choferes);
 
     $time_post = microtime(true);
     $time = $time_post - $time_pre;
@@ -15,4 +24,4 @@ if(token($data["token"]) != false) {
     $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('".date('Y-m-d H:i:s')."', '".token($data["token"])."', '".$time."', 'asd');";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
-    }
+}
