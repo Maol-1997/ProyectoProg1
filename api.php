@@ -35,3 +35,8 @@ if(!empty($_POST['id'])) { // OBTENER USUARIO JSON
         }
     }
 }
+/* CREAR USUARIO
+$sql = "INSERT INTO `transporte`.`usuario` (`usuario`, `clave`, `token`) VALUES ('".$_POST['user']."', '".$_POST['pass']."', '".hash('sha256', strtoupper($_POST['user'] . $_POST['pass'] . date('Y-m-d H:i:s')))."');";
+$ejecucionSQL = $conexion->prepare($sql);
+$ejecucionSQL->execute();
+*/
