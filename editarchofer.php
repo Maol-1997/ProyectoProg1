@@ -8,31 +8,31 @@ if(isset($data["apellido"])) {
     $ejecucionSQL->execute();
 }
 
-if(isset($data->nombre)) {
+if(isset($data["nombre"])) {
     $sql = "UPDATE `transporte`.`chofer` SET `nombre` = '" . $data["nombre"] . "' WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }
 
-if(isset($data->documento)) {
+if(isset($data["documento"])) {
     $sql = "UPDATE `transporte`.`chofer` SET `documento` = '" . $data["documento"] . "' WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }
 
-if(isset($data->email)) {
+if(isset($data["email"])) {
     $sql = "UPDATE `transporte`.`chofer` SET `email` = '" . $data["email"] . "' WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }
 
-if(isset($data->vehiculo_id)) {
+if(isset($data["vehiculo_id"])) {
     $sql = "UPDATE `transporte`.`chofer` SET `vehiculo_id` = '" . $data["vehiculo_id"] . "' WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }
 
-if(isset($data->sistema_id)) {
+if(isset($data["sistema_id"])) {
     $sql = "UPDATE `transporte`.`chofer` SET `sistema_id` = '" . $data["sistema_id"] . "' WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
