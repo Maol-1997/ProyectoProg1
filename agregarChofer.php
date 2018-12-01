@@ -18,4 +18,4 @@ if(token($data["token"]) != false) {
     $sql = "INSERT INTO `transporte`.`chofer` (`apellido`, `nombre`, `documento`, `email`, `vehiculo_id`, `sistema_id`) VALUES ('" . $data["apellido"] . "', '" . $data["nombre"] . "', '" . $data["documento"] . "', '" . $data["email"] . "', '" . $data["vehiculo_id"] . "', '" . $data["sistema_id"] . "');";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
-}
+}//
