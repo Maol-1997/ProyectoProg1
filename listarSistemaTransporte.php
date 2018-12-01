@@ -4,7 +4,7 @@ include("token.php");
 
 if(token($_GET['token']) != false) {
     $time_pre = microtime(true);
-    $sql = "SELECT * FROM chofer";
+    $sql = "SELECT * FROM sistema_transporte";
     $stmt = $conexion->prepare($sql);
     $stmt->execute();
 
@@ -12,7 +12,7 @@ if(token($_GET['token']) != false) {
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-        $choferes['Choferes'][] = $row;
+        $choferes['SistemasDeTransporte'][] = $row;
 
     }
 
@@ -22,7 +22,7 @@ if(token($_GET['token']) != false) {
     $time = $time_post - $time_pre;
     $time = $time*pow(10,3);
 
-    $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('".date('Y-m-d H:i:s')."', '".token($_GET['token'])."', '".$time."', 'listarChofer');";
+    $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('".date('Y-m-d H:i:s')."', '".token($_GET['token'])."', '".$time."', 'listarSistemaTransporte');";
     $ejecucionSQL = $conexion->prepare($sql);
     $ejecucionSQL->execute();
 }
