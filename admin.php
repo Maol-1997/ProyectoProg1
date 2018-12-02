@@ -38,6 +38,14 @@ if(!empty($_SESSION['logeado'])) {
             <input value="Usuarios" type="submit">
         </form>
         <form method="POST" action="admin.php">
+            <input type="hidden" name="opcion" value="MostrarRegistrosDeAuditoria">
+            <input value="Mostrar registros de auditoria" type="submit">
+        </form>
+        <form method="POST" action="admin.php">
+            <input type="hidden" name="opcion" value="ArchivoDeAuditoria">
+            <input value="Archivo de auditoria" type="submit">
+        </form>
+        <form method="POST" action="admin.php">
             <input type="hidden" name="logout" value="1">
             <input value="logout" type="submit">
         </form>
@@ -168,7 +176,70 @@ if(!empty($_SESSION['logeado'])) {
                 }
 
             }
-        }
+        } else
+        if($_POST["opcion"] == "MostrarRegistrosDeAuditoria") {
+            $sql = "SELECT * FROM auditoria";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute();
+            $res = $ejecucionSQL->fetchAll();
+            ?>
+            <table style="width:100%" border="1px solid black">
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha de acceso</th>
+                    <th>User</th>
+                    <th>Response Time</th>
+                    <th>Endpoint</th>
+                </tr>
+                <?php
+                foreach ($res as $rs) {
+                    echo "<tr>";
+                    echo "<td>" . $rs["auditoria_id"] . "</td>";
+                    echo "<td>" . $rs["fecha_acceso"] . "</td>";
+                    echo "<td>" . $rs["user"] . "</td>";
+                    echo "<td>" . $rs["response_time"] . "</td>";
+                    echo "<td>" . $rs["endpoint"] . "</td>";
+                    echo "</tr>";
+                } ?>
+            </table>
+            <?php
+        }else
+            if($_POST["opcion"] == "ArchivoDeAuditoria") {
+                if(empty($_POST["fechaInicio"]) && empty($_POST["fechaFinal"])) {?>
+                    <form method='POST' action="admin.php">
+                        Desde <input type='date' name='fechaInicio'>
+                        <br>
+                        Hasta <input type='date' name='fechaFinal'>
+                        <br>
+                        <input type="hidden" name="opcion" value="ArchivoDeAuditoria">
+                        <input type="submit" value="enviar">
+                    </form>
+                    <?php
+                } else {
+                    $file = fopen("auditoria.txt", "c+");
+                    $escribir = false;
+                    $contenido = "";
+                    $sql = "SELECT * FROM auditoria";
+                    $ejecucionSQL = $conexion->prepare($sql);
+                    $ejecucionSQL->execute();
+                    $res = $ejecucionSQL->fetchAll();
+                    foreach ($res as $rs) {
+                        $fecha = explode(" ", $rs["fecha_acceso"]);
+                        if($fecha[0] == $_POST["fechaInicio"]) {
+                            $escribir = true;
+                        }
+                        $contenido = $contenido.$rs["auditoria_id"].",".$rs["fecha_acceso"].",".$rs["user"].",".$rs["response_time"].",".$rs["endpoint"]."\r\n";
+                        if($fecha[0] == $_POST["fechaFinal"]) {
+                            $escribir = false;
+                        }
+                    }
+                    file_put_contents("auditoria.txt", $contenido);
+                    $_POST["opcion"] = "";
+                    header ("Content-Disposition: attachment; filename=auditoria.txt");
+                    header ("Content-Type: application/octet-stream");
+                    readfile("auditoria.txt");
+                }
+            }
 
 }if( !empty($_POST['opcion']) && !empty($_SESSION['logeado'])){?>
 <form method="POST">
