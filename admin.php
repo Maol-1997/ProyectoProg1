@@ -219,19 +219,12 @@ if(!empty($_SESSION['logeado'])) {
                     $file = fopen("auditoria.txt", "c+");
                     $escribir = false;
                     $contenido = "";
-                    $sql = "SELECT * FROM auditoria";
+                    $sql = "SELECT * FROM auditoria WHERE fecha_acceso BETWEEN '".$_POST["fechaInicio"]." 00:00:00"."' AND '".$_POST["fechaFinal"]." 23:59:59"."';";
                     $ejecucionSQL = $conexion->prepare($sql);
                     $ejecucionSQL->execute();
                     $res = $ejecucionSQL->fetchAll();
                     foreach ($res as $rs) {
-                        $fecha = explode(" ", $rs["fecha_acceso"]);
-                        if($fecha[0] == $_POST["fechaInicio"]) {
-                            $escribir = true;
-                        }
                         $contenido = $contenido.$rs["auditoria_id"].",".$rs["fecha_acceso"].",".$rs["user"].",".$rs["response_time"].",".$rs["endpoint"]."\r\n";
-                        if($fecha[0] == $_POST["fechaFinal"]) {
-                            $escribir = false;
-                        }
                     }
                     file_put_contents("auditoria.txt", $contenido);
                     $_POST["opcion"] = "";
