@@ -105,7 +105,7 @@ if(!empty($_SESSION['logeado'])) {
             <p>Usuario: </p>
             <input type="text" name="usuario">
             <p>Clave: </p>
-            <input type="text" name="clave">
+            <input type="password" name="clave">
             <input type="hidden" name="opcion" value="agregarUsuario">
             <br><br>
             <input type="submit">
@@ -114,7 +114,7 @@ if(!empty($_SESSION['logeado'])) {
         $sql ="";
         $ejecucionSQL="";
         if(!empty($_POST['usuario'])) {
-            $sql = "INSERT INTO `transporte`.`usuario` (`usuario`, `clave`, `token`) VALUES ('" . $_POST['usuario'] . "', '" . hash('sha256',$_POST['usuario'].$_POST['clave']) . "', '" . hash('sha256', strtoupper($_POST['usuario'] . $_POST['clave'] . date('Y-m-d H:i:s'))) . "');";
+            $sql = "INSERT INTO `transporte`.`usuario` (`usuario`, `clave`, `token`) VALUES ('" . $_POST['usuario'] . "', '" . hash('sha256',$_POST['usuario'].$_POST['clave']) . "', '" . hash('sha256', $_POST['usuario'] . $_POST['clave'] . date('Y-m-d H:i:s')) . "');";
             $ejecucionSQL = $conexion->prepare($sql);
             $ejecucionSQL->execute();
             echo "<h4>Se ha creado el usuario " . $_POST['usuario'] . "</h4>";
@@ -166,7 +166,7 @@ if(!empty($_SESSION['logeado'])) {
                     if ($_POST['lista'] == $rs['id']) {
                         echo "<form method='POST' action='admin.php'>";
                         echo "<input type='text' name='usuario' placeholder='" . $rs['usuario'] . "'>";
-                        echo "<input type='text' name='clave' placeholder='clave'>";
+                        echo "<input type='password' name='clave' placeholder='clave'>";
                         echo "<input type='hidden' name='opcion' value='editarUsuario'>";
                         echo "<input type='hidden' name='editarUsuarioOK' value='editarUsuarioOK'>";
                         echo "<input type='hidden' name='lista' value='".$_POST['lista']."'>";
