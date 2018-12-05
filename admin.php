@@ -217,7 +217,6 @@ if(!empty($_SESSION['logeado'])) {
                     <?php
                 } else {
                     $file = fopen("auditoria.txt", "c+");
-                    $escribir = false;
                     $contenido = "";
                     $sql = "SELECT * FROM auditoria WHERE fecha_acceso BETWEEN '".$_POST["fechaInicio"]." 00:00:00"."' AND '".$_POST["fechaFinal"]." 23:59:59"."';";
                     $ejecucionSQL = $conexion->prepare($sql);
