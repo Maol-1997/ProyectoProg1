@@ -4,7 +4,6 @@ include("token.php");
     switch ($_SERVER['REQUEST_METHOD']) {
         case "POST":
             $data = json_decode(file_get_contents("php://input"),true);
-            echo $data['token'];
             if(token($data["token"]) != false) {
                 $time_pre = microtime(true);
                 $sql = "INSERT INTO `transporte`.`chofer` (`apellido`, `nombre`, `documento`, `email`, `vehiculo_id`, `sistema_id`) VALUES ('" . $data["apellido"] . "', '" . $data["nombre"] . "', '" . $data["documento"] . "', '" . $data["email"] . "', '" . $data["vehiculo_id"] . "', '" . $data["sistema_id"] . "');";
@@ -97,6 +96,23 @@ include("token.php");
                 $time = $time_post - $time_pre;
                 $time = $time * pow(10, 3);
                 $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('" . date('Y-m-d H:i:s') . "', '" . token($data["token"]) . "', '" . $time . "', 'editarChofer');";
+                $ejecucionSQL = $conexion->prepare($sql);
+                $ejecucionSQL->execute();
+            }
+            break;
+        case "DELETE":
+            $data = json_decode(file_get_contents("php://input"),true);
+            if(token($data["token"]) != false) {
+                $time_pre = microtime(true);
+
+                $sql = "DELETE FROM `transporte`.`chofer` WHERE `chofer_id` = '" . $data["chofer_id"] . "';";
+                $ejecucionSQL = $conexion->prepare($sql);
+                $ejecucionSQL->execute();
+
+                $time_post = microtime(true);
+                $time = $time_post - $time_pre;
+                $time = $time*pow(10,3);
+                $sql = "INSERT INTO `transporte`.`auditoria` (`fecha_acceso`, `user`, `response_time`, `endpoint`) VALUES ('" . date('Y-m-d H:i:s') . "', '" . token($data["token"]) . "', '" . $time . "', 'borrarChofer');";
                 $ejecucionSQL = $conexion->prepare($sql);
                 $ejecucionSQL->execute();
             }
